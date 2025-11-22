@@ -1,11 +1,6 @@
-## pyproject.toml for the pip‑fund package
-## Build system configuration.  Setuptools is sufficient for this small
-## command‑line utility.  See the Python Packaging User Guide for more
-## details on the `[build-system]` table and specifying build
-## dependencies.
 [build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling>=1.21.1"]
+build-backend = "hatchling.build"
 
 ## Project metadata.  The name should be unique on PyPI.  Update
 ## author information and the version as you iterate.
@@ -14,7 +9,7 @@ name = "pip-fund"
 version = "0.1.0"
 description = "Enumerate funding links for Python packages"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.11"
 license = { text = "MIT" }
 authors = [
     { name = "Gaurav Sood", email = "gsood07@gmail.com" }
@@ -40,6 +35,7 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: System :: Software Distribution",
     "Topic :: Utilities"
@@ -66,27 +62,66 @@ github = [
     "PyGithub>=1.59",
     "PyYAML>=6.0"
 ]
+docs = [
+    "sphinx>=7.0",
+    "furo>=2024.1.29",
+    "sphinx-autodoc-typehints>=1.25",
+    "sphinx-copybutton>=0.5",
+    "myst-parser>=2.0",
+]
+
+[dependency-groups]
 dev = [
     "pytest>=7.0",
     "pytest-cov>=4.0",
-    "black>=23.0",
-    "flake8>=6.0",
-    "mypy>=1.0"
+    "ruff>=0.7.0",
+    "mypy>=1.0",
+    "pre-commit>=3.0"
+]
+test = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0"
 ]
 
-## Tool-specific configuration
-[tool.setuptools]
-package-dir = {"" = "src"}
+[tool.hatch.build.targets.wheel]
+packages = ["pip_fund"]
 
-[tool.setuptools.packages.find]
-where = ["src"]
-
-[tool.black]
+[tool.ruff]
 line-length = 88
-target-version = ["py38"]
+target-version = "py311"
+exclude = [
+  ".git",
+  "__pycache__",
+  "build",
+  "dist",
+  ".venv",
+  "docs"
+]
+
+[tool.ruff.lint]
+select = [
+  "E",  # pycodestyle errors
+  "W",  # pycodestyle warnings
+  "F",  # pyflakes
+  "I",  # isort
+  "B",  # flake8-bugbear
+  "C4", # flake8-comprehensions
+  "UP", # pyupgrade
+]
+ignore = [
+  "E501",  # line too long (handled by formatter)
+  "B008",  # do not perform function calls in argument defaults
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+"tests/*" = ["S101"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["pip_fund"]
 
 [tool.mypy]
-python_version = "3.8"
+python_version = "3.11"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
@@ -94,5 +129,4 @@ disallow_untyped_defs = true
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
-python_classes = ["Test*"]
-python_functions = ["test_*"]
+addopts = "--cov=pip_fund --cov-report=html --cov-report=term-missing"

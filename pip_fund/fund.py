@@ -21,7 +21,7 @@ import json
 import os
 import re
 from collections import defaultdict
-from typing import Dict, Iterable, List, Mapping, Optional, Tuple
+from collections.abc import Iterable, Mapping
 from urllib.parse import urlparse, urlunparse
 
 try:
@@ -38,8 +38,8 @@ except ImportError:
 # Optional GitHub dependencies.  These are only imported when the
 # ``--github`` flag is provided *and* the extras have been installed.
 try:
-    from github import Github  # type: ignore[import]
     import yaml  # type: ignore[import]
+    from github import Github  # type: ignore[import]
 except ImportError:
     Github = None  # type: ignore[assignment]
     yaml = None  # type: ignore[assignment]
@@ -95,7 +95,7 @@ def normalise_url(url: str) -> str:
 
 def extract_funding_urls_from_dist(
     dist: importlib_metadata.Distribution,
-) -> List[Tuple[str, str]]:
+) -> list[tuple[str, str]]:
     """Extract funding URLs from a distribution's metadata.
 
     Args:
@@ -106,7 +106,7 @@ def extract_funding_urls_from_dist(
         Project‑URL entries.  Labels are preserved as they appear in
         metadata; if an entry lacks a label, ``"Generic Link"`` is used.
     """
-    funding_entries: List[Tuple[str, str]] = []
+    funding_entries: list[tuple[str, str]] = []
     try:
         project_urls = dist.metadata.get_all("Project-URL", []) or []
     except Exception:
@@ -131,7 +131,7 @@ def extract_funding_urls_from_dist(
     return funding_entries
 
 
-def query_pypi_project_urls(package_name: str) -> Dict[str, str]:
+def query_pypi_project_urls(package_name: str) -> dict[str, str]:
     """Query the PyPI JSON API for a package's project URLs.
 
     When ``--remote`` is specified, this helper uses the public PyPI
@@ -169,7 +169,7 @@ def query_pypi_project_urls(package_name: str) -> Dict[str, str]:
 
 def extract_github_repo_from_metadata(
     dist: importlib_metadata.Distribution,
-) -> Optional[str]:
+) -> str | None:
     """Attempt to find a GitHub repository URL in a distribution's metadata.
 
     This helper inspects the ``Home-page`` field and ``Project-URL``
@@ -185,7 +185,7 @@ def extract_github_repo_from_metadata(
     """
     # Check the Home-page field
     homepage = dist.metadata.get("Home-page")
-    candidates: List[str] = []
+    candidates: list[str] = []
     if homepage:
         candidates.append(homepage)
     # Also check Project-URL entries for labels like "Source" or
@@ -216,7 +216,7 @@ def extract_github_repo_from_metadata(
     return None
 
 
-def fetch_github_funding(repo_path: str, token: Optional[str]) -> List[Tuple[str, str]]:
+def fetch_github_funding(repo_path: str, token: str | None) -> list[tuple[str, str]]:
     """Fetch funding links from a GitHub repository’s FUNDING.yml.
 
     This helper uses the GitHub API via the PyGithub library to fetch
@@ -245,7 +245,7 @@ def fetch_github_funding(repo_path: str, token: Optional[str]) -> List[Tuple[str
         data = yaml.safe_load(contents.decoded_content)
         if not isinstance(data, dict):
             return []
-        results: List[Tuple[str, str]] = []
+        results: list[tuple[str, str]] = []
         for platform, entries in data.items():
             # Platform names correspond to GitHub sponsors ("github"),
             # Patreon ("patreon"), etc.  Entries may be strings or
@@ -282,8 +282,8 @@ def gather_funding_info(
     package_names: Iterable[str],
     use_remote: bool,
     use_github: bool,
-    github_token: Optional[str],
-) -> Dict[str, List[Tuple[str, str]]]:
+    github_token: str | None,
+) -> dict[str, list[tuple[str, str]]]:
     """Gather funding information for the given packages.
 
     Args:
@@ -301,7 +301,7 @@ def gather_funding_info(
     Returns:
         A mapping from package name to a list of ``(label, url)`` tuples.
     """
-    results: Dict[str, List[Tuple[str, str]]] = defaultdict(list)
+    results: dict[str, list[tuple[str, str]]] = defaultdict(list)
     if package_names:
         # Explicit list of packages
         for pkg in package_names:
@@ -348,7 +348,7 @@ def gather_funding_info(
                     # Try remote metadata for repository URL
                     # using the PyPI JSON API
                     pypi_urls = query_pypi_project_urls(pkg)
-                    for lbl, url in pypi_urls.items():
+                    for _lbl, url in pypi_urls.items():
                         # look for GitHub repo in URL
                         match = re.match(
                             r"https?://github\.com/([A-Za-z0-9_.-]+)/([A-Za-z0-9_.-]+)",
@@ -388,8 +388,8 @@ def gather_funding_info(
 
 
 def group_by_url(
-    results: Mapping[str, List[Tuple[str, str]]],
-) -> Mapping[Tuple[str, str], List[str]]:
+    results: Mapping[str, list[tuple[str, str]]],
+) -> Mapping[tuple[str, str], list[str]]:
     """Group funding results by URL.
 
     Normalises URLs before grouping so that links differing only in
@@ -403,7 +403,7 @@ def group_by_url(
         the value is a list of packages that declare that funding
         entry.
     """
-    grouped: Dict[Tuple[str, str], List[str]] = defaultdict(list)
+    grouped: dict[tuple[str, str], list[str]] = defaultdict(list)
     for pkg, entries in results.items():
         for lbl, url in entries:
             canon = normalise_url(url)
@@ -411,7 +411,7 @@ def group_by_url(
     return grouped
 
 
-def format_as_plain(results: Mapping[str, List[Tuple[str, str]]]) -> str:
+def format_as_plain(results: Mapping[str, list[tuple[str, str]]]) -> str:
     """Format funding results as a human‑readable string.
 
     Funding entries are grouped by canonical URL.  Each unique entry
@@ -433,7 +433,7 @@ def format_as_plain(results: Mapping[str, List[Tuple[str, str]]]) -> str:
             "  - The funding links are present but use a different, unrecognised label."
         )
     grouped = group_by_url(results)
-    lines: List[str] = []
+    lines: list[str] = []
     lines.append("--- Funding Information Found ---")
     for (lbl, url), packages in sorted(grouped.items(), key=lambda kv: kv[0][1]):
         lines.append(f"{lbl}: {url}")
@@ -442,7 +442,7 @@ def format_as_plain(results: Mapping[str, List[Tuple[str, str]]]) -> str:
     return "\n".join(lines)
 
 
-def format_as_json(results: Mapping[str, List[Tuple[str, str]]]) -> str:
+def format_as_json(results: Mapping[str, list[tuple[str, str]]]) -> str:
     """Format funding results as a JSON string.
 
     Funding entries are grouped by canonical URL.  The JSON maps each
@@ -467,7 +467,7 @@ def format_as_json(results: Mapping[str, List[Tuple[str, str]]]) -> str:
     return json.dumps(jsonable, indent=2)
 
 
-def format_as_markdown(results: Mapping[str, List[Tuple[str, str]]]) -> str:
+def format_as_markdown(results: Mapping[str, list[tuple[str, str]]]) -> str:
     """Format funding results as a Markdown document.
 
     Funding entries are grouped by canonical URL.  Each entry is
@@ -483,7 +483,7 @@ def format_as_markdown(results: Mapping[str, List[Tuple[str, str]]]) -> str:
     if not results:
         return "No funding links found."
     grouped = group_by_url(results)
-    lines: List[str] = []
+    lines: list[str] = []
     lines.append("# Funding Information\n")
     for (lbl, url), packages in sorted(grouped.items(), key=lambda kv: kv[0][1]):
         lines.append(f"* **{lbl}**: {url}")
@@ -491,7 +491,7 @@ def format_as_markdown(results: Mapping[str, List[Tuple[str, str]]]) -> str:
     return "\n".join(lines)
 
 
-def parse_arguments(argv: Optional[List[str]] = None) -> argparse.Namespace:
+def parse_arguments(argv: list[str] | None = None) -> argparse.Namespace:
     """Parse command‑line arguments.
 
     Args:
@@ -540,7 +540,7 @@ def parse_arguments(argv: Optional[List[str]] = None) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
-def main(argv: Optional[List[str]] = None) -> None:
+def main(argv: list[str] | None = None) -> None:
     """Entry point for the ``pip_fund`` command.  Parses arguments and
     prints the formatted funding report.
 
