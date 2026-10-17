@@ -26,4 +26,4 @@
 - Move the package into `src/` and adopt shared testing, documentation, and
   release workflows.
 
-[0.2.0]: https://github.com/recite/pip-fund/compare/a9bda4f...v0.2.0
+[0.2.0]: https://github.com/recite/pip-fund/compare/a9bda4f...8a24448bbd4b3e6f75782dcf1414fe67c1073a53
