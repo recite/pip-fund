@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [0.2.0] - 2026-10-17
 
 ### Added
 
@@ -26,4 +26,4 @@
 - Move the package into `src/` and adopt shared testing, documentation, and
   release workflows.
 
-[Unreleased]: https://github.com/recite/pip-fund/compare/a9bda4f...HEAD
+[0.2.0]: https://github.com/recite/pip-fund/compare/a9bda4f...v0.2.0
