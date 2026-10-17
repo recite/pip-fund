@@ -1,16 +1,15 @@
 [build-system]
-requires = ["hatchling>=1.21.1"]
-build-backend = "hatchling.build"
+requires = ["uv_build>=0.12.5,<0.13"]
+build-backend = "uv_build"
 
-## Project metadata.  The name should be unique on PyPI.  Update
-## author information and the version as you iterate.
 [project]
 name = "pip-fund"
-version = "0.1.0"
-description = "Enumerate funding links for Python packages"
+version = "0.2.0"
+description = "Audit funding links across a Python project's dependency graph"
 readme = "README.md"
 requires-python = ">=3.11"
-license = { text = "MIT" }
+license = "MIT"
+license-files = ["LICENSE"]
 authors = [
     { name = "Gaurav Sood", email = "contact@gsood.com" }
 ]
@@ -19,7 +18,7 @@ maintainers = [
 ]
 keywords = [
     "funding",
-    "sponsorship", 
+    "sponsorship",
     "open-source",
     "packaging",
     "pypi",
@@ -30,106 +29,115 @@ classifiers = [
     "Development Status :: 4 - Beta",
     "Environment :: Console",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: System :: Software Distribution",
     "Topic :: Utilities"
 ]
 
+dependencies = [
+    "packaging>=25.0",
+    "requests>=2.32",
+]
+
 [project.urls]
-Homepage = "https://github.com/gojiplus/pip-fund"
-Repository = "https://github.com/gojiplus/pip-fund.git"
-Documentation = "https://github.com/gojiplus/pip-fund#readme"
-"Bug Tracker" = "https://github.com/gojiplus/pip-fund/issues"
+Homepage = "https://github.com/recite/pip-fund"
+Repository = "https://github.com/recite/pip-fund.git"
+Documentation = "https://github.com/recite/pip-fund#readme"
+"Bug Tracker" = "https://github.com/recite/pip-fund/issues"
 Funding = "https://github.com/sponsors/soodoku"
 
-## Define a console script so that `pip install pip-fund` creates a
-## `pip-fund` command.  The value points to the `main` function in
-## `pip_fund/fund.py`.
 [project.scripts]
-pip-fund = "pip_fund.fund:main"
+pip-fund = "pip_fund.cli:cli"
 
-## Optional dependencies.  Installing with `pip install pip-fund[github]`
-## will pull in PyGithub and PyYAML, enabling GitHub sponsor
-## integration.
 [project.optional-dependencies]
 github = [
-    "PyGithub>=1.59",
     "PyYAML>=6.0"
-]
-docs = [
-    "sphinx>=7.0",
-    "furo>=2024.1.29",
-    "sphinx-autodoc-typehints>=1.25",
-    "sphinx-copybutton>=0.5",
-    "myst-parser>=2.0",
 ]
 
 [dependency-groups]
 dev = [
-    "pytest>=7.0",
-    "pytest-cov>=4.0",
-    "ruff>=0.7.0",
-    "mypy>=1.0",
-    "pre-commit>=3.0"
+    "ruff>=0.14",
+    "pre-commit>=4",
+    "types-PyYAML>=6.0",
+    "types-requests>=2.32",
+    "twine>=7.0",
+    "pyright>=1.1.390",
+    "pydoclint>=0.5",
+    { include-group = "test" },
 ]
 test = [
-    "pytest>=7.0",
-    "pytest-cov>=4.0"
+    "pytest>=8",
+    "pytest-cov>=6",
+    "PyYAML>=6.0",
 ]
-
-[tool.hatch.build.targets.wheel]
-packages = ["pip_fund"]
+docs = ["sphinx>=8", "furo", "myst-parser", "sphinx-copybutton", "py-canon @ git+https://github.com/gojiplus/py-canon@v1"]
 
 [tool.ruff]
 line-length = 88
 target-version = "py311"
-exclude = [
-  ".git",
-  "__pycache__",
-  "build",
-  "dist",
-  ".venv",
-  "docs"
-]
 
 [tool.ruff.lint]
+external = ["DOC"]
 select = [
-  "E",  # pycodestyle errors
-  "W",  # pycodestyle warnings
-  "F",  # pyflakes
-  "I",  # isort
-  "B",  # flake8-bugbear
-  "C4", # flake8-comprehensions
-  "UP", # pyupgrade
+    "E", "W", "F", "I", "B", "C4", "UP", "N", "D", "S", "SIM", "T20", "PT", "RUF",
+    "PTH", "RET", "PIE", "FURB", "PERF", "DTZ", "LOG", "G", "TC", "FLY",
+    "RSE", "SLOT", "FA", "A", "EXE", "ICN", "PGH", "PLE", "ARG", "SLF",
 ]
-ignore = [
-  "E501",  # line too long (handled by formatter)
-  "B008",  # do not perform function calls in argument defaults
-]
+# D203/D213: the google convention the fleet standard picks. W191/D206/D300:
+# ruff's own docs list these as always incompatible with `ruff format`, which
+# the standard also runs.
+ignore = ["D203", "D213", "W191", "D206", "D300"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
 
 [tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["F401"]
-"tests/*" = ["S101"]
+"tests/**" = ["S101", "D", "ARG", "SLF"]
+"docs/**" = ["D"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["pip_fund"]
 
-[tool.mypy]
-python_version = "3.11"
-warn_return_any = true
-warn_unused_configs = true
-disallow_untyped_defs = true
-
 [tool.pytest.ini_options]
+minversion = "8"
+log_level = "INFO"
+xfail_strict = true
+filterwarnings = ["error"]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
-addopts = "--cov=pip_fund --cov-report=html --cov-report=term-missing"
+addopts = "-ra --strict-config --strict-markers --cov=pip_fund --cov-report=term-missing --cov-fail-under=90"
+
+[tool.pyright]
+include = ["src"]
+typeCheckingMode = "standard"
+
+[tool.pydoclint]
+style = "google"
+arg-type-hints-in-docstring = false
+check-return-types = false
+check-class-attributes = false
+allow-init-docstring = true
+exclude = '\.venv|tests|docs'
+
+[tool.uv.dependency-groups]
+docs = { requires-python = ">=3.12" }
+
+[tool.uv.build-backend]
+module-name = "pip_fund"
 
 [tool.codespell]
 builtin = "clear,rare,en-GB_to_en-US"
+
+[tool.preen]
+# Synthetic endpoints exercised by offline discovery tests.
+link_ignore = [
+    '^https://github\.com/acme/demo(?:\.git|/issues)?$',
+    '^https://pypi\.org/pypi/demo/1\.0/json$',
+    '^https://crowdfunding\.lfx\.linuxfoundation\.org/projects/linux$',
+]
