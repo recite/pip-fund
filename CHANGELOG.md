@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+## 0.2.1 - 2026-10-17
+
+### Fixed
+
+- Use py-canon's `release.yml` workflow filename to match the PyPI trusted
+  publisher configuration.
+
+The package behavior is unchanged from 0.2.0, whose PyPI upload did not complete.
+
 ## [0.2.0] - 2026-10-17
 
 ### Added
