@@ -1,0 +1,12 @@
+# Managed by copier — records template version for `copier update`. Do not edit.
+_commit: v1.0.1
+_src_path: gh:gojiplus/py-canon
+author_email: contact@gsood.com
+author_name: Gaurav Sood
+coverage_floor: 90
+default_branch: main
+description: Audit funding links across a Python project's dependency graph
+needs_cli: true
+org: recite
+package_name: pip_fund
+project_name: pip-fund
