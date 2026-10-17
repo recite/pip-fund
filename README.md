@@ -113,7 +113,7 @@ For example, a project report might contain:
 
 ```text
 Scanned 2 dependencies from project example.
-2 packages advertise funding through 1 destinations.
+Packages advertising funding: 2; destinations: 1.
 Python: /path/to/project/.venv/bin/python
 
 https://example.com/support

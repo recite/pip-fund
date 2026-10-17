@@ -20,4 +20,4 @@ jobs:
       pages: write
       id-token: write
     with:
-      deploy: ${{ github.event_name == 'push' }}
+      deploy: false

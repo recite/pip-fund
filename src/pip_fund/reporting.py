@@ -30,14 +30,14 @@ def format_text(report: Report) -> str:
     lines = [
         f"Scanned {len(report.packages)} dependencies from {report.scope}.",
         (
-            f"{report.funded_package_count} packages advertise funding through "
-            f"{len(report.destinations)} destinations."
+            f"Packages advertising funding: {report.funded_package_count}; "
+            f"destinations: {len(report.destinations)}."
         ),
     ]
     if report.interpreter:
         lines.append(f"Python: {report.interpreter}")
     if report.failures:
-        lines.append(f"{len(report.failures)} issues made this report incomplete.")
+        lines.append(f"Issues making this report incomplete: {len(report.failures)}.")
 
     packages = _package_index(report)
     for destination in report.destinations:
@@ -73,8 +73,8 @@ def format_markdown(report: Report) -> str:
         "",
         (
             f"Scanned {len(report.packages)} dependencies; "
-            f"{report.funded_package_count} packages advertise funding through "
-            f"{len(report.destinations)} destinations."
+            f"Packages advertising funding: {report.funded_package_count}; "
+            f"destinations: {len(report.destinations)}."
         ),
     ]
     if report.interpreter:

@@ -5,7 +5,7 @@ build-backend = "uv_build"
 [project]
 name = "pip-fund"
 version = "0.2.0"
-description = "Audit funding links across a Python project's dependency graph"
+description = "Find funding links for installed Python packages and their dependencies"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
@@ -137,7 +137,7 @@ builtin = "clear,rare,en-GB_to_en-US"
 [tool.preen]
 # Synthetic endpoints exercised by offline discovery tests.
 link_ignore = [
-    '^https://github\.com/acme/demo(?:\.git|/issues)?$',
-    '^https://pypi\.org/pypi/demo/1\.0/json$',
-    '^https://crowdfunding\.lfx\.linuxfoundation\.org/projects/linux$',
+    '^https?://github\.com/acme/demo(?:\.git|/issues)?$',
+    '^https?://pypi\.org/pypi/demo/1\.0/json$',
+    '^https?://crowdfunding\.lfx\.linuxfoundation\.org/projects/linux$',
 ]

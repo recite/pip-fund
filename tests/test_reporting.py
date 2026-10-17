@@ -39,7 +39,7 @@ def test_text_groups_by_url_across_labels() -> None:
     assert output.count("https://example.com/pay\n") == 1
     assert "Direct: Alpha" in output
     assert "Transitive: Bravo" in output
-    assert "1 issues made this report incomplete" in output
+    assert "Issues making this report incomplete: 1" in output
 
 
 def test_json_has_versioned_deterministic_schema() -> None:
