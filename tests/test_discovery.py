@@ -331,3 +331,27 @@ def test_github_reports_invalid_api_content() -> None:
 
     assert not records
     assert "GitHub lookup failed" in failures[0].message
+
+
+@pytest.mark.parametrize("port", ["", ":8443", ":0"])
+def test_canonical_url_preserves_ipv6_authority(port: str) -> None:
+    url = f"https://[2001:db8::1]{port}/donate"
+    assert canonicalise_url(url) == url
+
+
+def test_github_keeps_valid_custom_links_after_malformed_url() -> None:
+    funding = {"custom": ["https://[broken", "https://example.com/pay"]}
+    encoded = base64.b64encode(json.dumps(funding).encode()).decode()
+    fake_session = FakeSession([FakeResponse(200, {"content": encoded})])
+    distribution = fake_distribution(
+        "demo", project_urls=[("Source", "https://github.com/acme/demo")]
+    )
+
+    records, failures = FundingDiscovery(
+        use_github=True, session=session(fake_session)
+    ).discover([package()], distributions=[distribution])
+
+    assert [record.url for record in records] == ["https://example.com/pay"]
+    assert len(failures) == 1
+    assert failures[0].source == "github"
+    assert "Invalid IPv6 URL" in failures[0].message

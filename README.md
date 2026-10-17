@@ -134,8 +134,7 @@ Dependency depth and parent relationships are included for graph scans;
 Funding labels are normalized using the PyPA Project-URL rules. The recognized
 labels are `Funding`, `Sponsor`, `Donate`, and `Donation`. Links must use HTTP or
 HTTPS. Grouping preserves URL fragments and meaningful query parameters while
-removing five tracking parameters: `utm_campaign`, `utm_content`, `utm_medium`,
-`utm_source`, and `utm_term`.
+removing `utm_*` tracking parameters.
 
 The dependency graph describes installed packages. pip-fund does not install
 packages, resolve a lockfile, or measure which dependencies an application

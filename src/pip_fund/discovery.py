@@ -70,8 +70,10 @@ def canonicalise_url(url: str) -> str:
 
     scheme = parsed.scheme.lower()
     host = parsed.hostname.lower()
+    if ":" in host:
+        host = f"[{host}]"
     port = parsed.port
-    if port and not (
+    if port is not None and not (
         (scheme == "http" and port == 80) or (scheme == "https" and port == 443)
     ):
         host = f"{host}:{port}"
@@ -410,8 +412,18 @@ class FundingDiscovery:
                 selected_values = values if isinstance(values, list) else [values]
                 for value in selected_values:
                     if isinstance(value, str):
-                        if not urlparse(value).scheme:
-                            value = f"https://{value}"
+                        try:
+                            if not urlparse(value).scheme:
+                                value = f"https://{value}"
+                        except ValueError as error:
+                            failures.append(
+                                Failure(
+                                    package=package,
+                                    source="github",
+                                    message=f"Invalid custom FUNDING.yml URL: {error}",
+                                )
+                            )
+                            continue
                         entries.append(("Custom", value))
                     else:
                         failures.append(
