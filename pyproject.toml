@@ -130,3 +130,6 @@ disallow_untyped_defs = true
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 addopts = "--cov=pip_fund --cov-report=html --cov-report=term-missing"
+
+[tool.codespell]
+builtin = "clear,rare,en-GB_to_en-US"

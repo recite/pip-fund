@@ -6,7 +6,7 @@ links associated with Python packages.  Funding information is
 discovered by inspecting package metadata (``Project‑URL`` entries)
 and, optionally, by querying the PyPI JSON API and GitHub’s
 ``.github/FUNDING.yml`` file when the optional ``github`` feature is
-enabled.  Duplicate links are normalised and grouped across
+enabled.  Duplicate links are normalized and grouped across
 packages so that each unique funding source is printed once with a
 list of packages that declare it.
 
@@ -45,7 +45,7 @@ except ImportError:
     yaml = None  # type: ignore[assignment]
 
 
-# Normalised labels that count as “funding”.  See the Python Packaging
+# Normalized labels that count as “funding”.  See the Python Packaging
 # User Guide’s “Well-known Project URLs” section for discussion of
 # funding aliases.
 FUNDING_ALIASES: set[str] = {
@@ -57,17 +57,17 @@ FUNDING_ALIASES: set[str] = {
 
 
 def normalise_label(label: str) -> str:
-    """Normalise a Project‑URL label for comparison.
+    """Normalize a Project‑URL label for comparison.
 
     Remove punctuation and whitespace and convert to lowercase.  This
     follows the rules described in the core metadata specification and
-    PEP 753 for normalising project URL labels.
+    PEP 753 for normalizing project URL labels.
 
     Args:
         label: The label from a Project‑URL entry.
 
     Returns:
-        The normalised label.
+        The normalized label.
     """
     cleaned = re.sub(r"[^A-Za-z0-9]", "", label)
     return cleaned.lower()
@@ -80,7 +80,7 @@ def normalise_url(url: str) -> str:
     should not affect whether two URLs refer to the same funding page.
 
     Args:
-        url: The URL to normalise.
+        url: The URL to normalize.
 
     Returns:
         The URL without ``?`` query parameters or ``#`` fragments.
@@ -392,7 +392,7 @@ def group_by_url(
 ) -> Mapping[tuple[str, str], list[str]]:
     """Group funding results by URL.
 
-    Normalises URLs before grouping so that links differing only in
+    Normalizes URLs before grouping so that links differing only in
     query parameters or fragments are treated as the same.
 
     Args:
@@ -430,7 +430,7 @@ def format_as_plain(results: Mapping[str, list[tuple[str, str]]]) -> str:
             "This could mean:\n"
             "  - No packages declare funding links in their metadata.\n"
             "  - The packages use an older metadata format that doesn't support 'Project-URL'.\n"
-            "  - The funding links are present but use a different, unrecognised label."
+            "  - The funding links are present but use a different, unrecognized label."
         )
     grouped = group_by_url(results)
     lines: list[str] = []
