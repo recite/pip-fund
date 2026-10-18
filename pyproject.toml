@@ -68,7 +68,7 @@ dev = [
     "types-requests>=2.33.0.20261006",
     "twine>=7.0",
     "pyright>=1.1.390",
-    "pydoclint>=0.5",
+    "pydoclint>=0.11.0",
     { include-group = "test" },
 ]
 test = [
