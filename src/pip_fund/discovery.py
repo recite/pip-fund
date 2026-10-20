@@ -162,7 +162,8 @@ def github_repository_from_distribution(
 ) -> str | None:
     """Extract a GitHub repository path from installed metadata."""
     return github_repository_from_urls(
-        _project_urls(distribution), distribution.metadata.get("Home-page")
+        _project_urls(distribution),
+        next(iter(distribution.metadata.get_all("Home-page") or []), None),
     )
 
 

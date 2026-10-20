@@ -1,6 +1,17 @@
 # Changelog
 
-## [Unreleased]
+## Unreleased
+
+## 0.2.1 - 2026-10-17
+
+### Fixed
+
+- Use py-canon's `release.yml` workflow filename to match the PyPI trusted
+  publisher configuration.
+
+The package behavior is unchanged from 0.2.0, whose PyPI upload did not complete.
+
+## [0.2.0] - 2026-10-17
 
 ### Added
 
@@ -26,4 +37,4 @@
 - Move the package into `src/` and adopt shared testing, documentation, and
   release workflows.
 
-[Unreleased]: https://github.com/recite/pip-fund/compare/a9bda4f...HEAD
+[0.2.0]: https://github.com/recite/pip-fund/compare/a9bda4f...8a24448bbd4b3e6f75782dcf1414fe67c1073a53

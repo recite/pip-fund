@@ -4,7 +4,7 @@ build-backend = "uv_build"
 
 [project]
 name = "pip-fund"
-version = "0.2.0"
+version = "0.2.1"
 description = "Find funding links for installed Python packages and their dependencies"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -65,10 +65,10 @@ dev = [
     "ruff>=0.14",
     "pre-commit>=4",
     "types-PyYAML>=6.0",
-    "types-requests>=2.32",
+    "types-requests>=2.33.0.20261006",
     "twine>=7.0",
     "pyright>=1.1.390",
-    "pydoclint>=0.5",
+    "pydoclint>=0.11.0",
     { include-group = "test" },
 ]
 test = [
