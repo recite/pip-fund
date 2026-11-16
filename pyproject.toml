@@ -133,11 +133,3 @@ module-name = "pip_fund"
 
 [tool.codespell]
 builtin = "clear,rare,en-GB_to_en-US"
-
-[tool.preen]
-# Synthetic endpoints exercised by offline discovery tests.
-link_ignore = [
-    '^https?://github\.com/acme/demo(?:\.git|/issues)?$',
-    '^https?://pypi\.org/pypi/demo/1\.0/json$',
-    '^https?://crowdfunding\.lfx\.linuxfoundation\.org/projects/linux$',
-]
