@@ -1,0 +1,8 @@
+# Patterns are written without a scheme: preen's links check scans this file
+# too, and a pattern with one would be extracted and checked as a link.
+exclude = [
+  # Synthetic endpoints exercised by offline discovery tests.
+  '//github\.com/acme/demo(?:\.git|/issues)?$',
+  '//pypi\.org/pypi/demo/1\.0/json$',
+  '//crowdfunding\.lfx\.linuxfoundation\.org/projects/linux$',
+]
