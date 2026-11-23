@@ -2,7 +2,8 @@ version = 1
 revision = 5
 requires-python = ">=3.11"
 resolution-markers = [
-    "python_full_version >= '3.12'",
+    "python_full_version >= '3.13'",
+    "python_full_version == '3.12.*'",
     "python_full_version < '3.12'",
 ]
 
@@ -854,11 +855,11 @@ dev = [
     { name = "types-requests" },
 ]
 docs = [
-    { name = "furo", marker = "python_full_version >= '3.12'" },
-    { name = "myst-parser", marker = "python_full_version >= '3.12'" },
-    { name = "py-canon", marker = "python_full_version >= '3.12'" },
-    { name = "sphinx", marker = "python_full_version >= '3.12'" },
-    { name = "sphinx-copybutton", marker = "python_full_version >= '3.12'" },
+    { name = "furo", marker = "python_full_version >= '3.13'" },
+    { name = "myst-parser", marker = "python_full_version >= '3.13'" },
+    { name = "py-canon", marker = "python_full_version >= '3.13'" },
+    { name = "sphinx", marker = "python_full_version >= '3.13'" },
+    { name = "sphinx-copybutton", marker = "python_full_version >= '3.13'" },
 ]
 test = [
     { name = "pytest" },
@@ -867,7 +868,7 @@ test = [
 ]
 
 [package.group-requires-python]
-docs = ">=3.12"
+docs = ">=3.13"
 
 [package.metadata]
 requires-dist = [
@@ -891,11 +892,11 @@ dev = [
     { name = "types-requests", specifier = ">=2.33.0.20261006" },
 ]
 docs = [
-    { name = "furo", marker = "python_full_version >= '3.12'" },
-    { name = "myst-parser", marker = "python_full_version >= '3.12'" },
-    { name = "py-canon", marker = "python_full_version >= '3.12'", git = "https://github.com/gojiplus/py-canon?rev=v1" },
-    { name = "sphinx", marker = "python_full_version >= '3.12'", specifier = ">=8" },
-    { name = "sphinx-copybutton", marker = "python_full_version >= '3.12'" },
+    { name = "furo", marker = "python_full_version >= '3.13'" },
+    { name = "myst-parser", marker = "python_full_version >= '3.13'" },
+    { name = "py-canon", marker = "python_full_version >= '3.13'", git = "https://github.com/gojiplus/py-canon?rev=v1" },
+    { name = "sphinx", marker = "python_full_version >= '3.13'", specifier = ">=8" },
+    { name = "sphinx-copybutton", marker = "python_full_version >= '3.13'" },
 ]
 test = [
     { name = "pytest", specifier = ">=8" },
