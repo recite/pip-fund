@@ -32,7 +32,6 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
     "Topic :: Software Development :: Libraries :: Python Modules",
@@ -126,7 +125,7 @@ allow-init-docstring = true
 exclude = '\.venv|tests|docs'
 
 [tool.uv.dependency-groups]
-docs = { requires-python = ">=3.12" }
+docs = { requires-python = ">=3.13" }
 
 [tool.uv.build-backend]
 module-name = "pip_fund"
