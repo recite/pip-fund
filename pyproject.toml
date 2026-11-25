@@ -41,7 +41,7 @@ classifiers = [
 
 dependencies = [
     "packaging>=25.0",
-    "requests>=2.32",
+    "requests>=2.32.2",
 ]
 
 [project.urls]
