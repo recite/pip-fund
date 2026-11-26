@@ -40,7 +40,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "packaging>=25.0",
+    "packaging>=26.1",
     "requests>=2.32.2",
 ]
 
