@@ -872,9 +872,9 @@ docs = ">=3.13"
 
 [package.metadata]
 requires-dist = [
-    { name = "packaging", specifier = ">=25.0" },
+    { name = "packaging", specifier = ">=26.1" },
     { name = "pyyaml", marker = "extra == 'github'", specifier = ">=6.0" },
-    { name = "requests", specifier = ">=2.32" },
+    { name = "requests", specifier = ">=2.32.2" },
 ]
 provides-extras = ["github"]
 
